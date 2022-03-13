@@ -3,6 +3,7 @@ Sudoku scraping and solving along with interactive Gui
 """
 
 from copy import deepcopy
+from datetime import datetime
 from tkinter import *
 from bs4 import BeautifulSoup
 import requests
@@ -33,6 +34,7 @@ class SudokuScraperAndSolver:
         cpy = deepcopy(sudoku)
         self.backtracking(cpy)
         self.solved = cpy
+        self.saving_solution_to_txt(cpy)
 
 
     def __str__(self):
@@ -70,17 +72,23 @@ class SudokuScraperAndSolver:
         occurs when it occurs it goes on previos number untill conflict is resolved
         """
         if self.see_next_empty(sudoku):
-            k,m = self.see_next_empty(sudoku)
+            row, column = self.see_next_empty(sudoku)
         else:
             return True
         for num in range(1,10):
-            if self.check_row_col_block(num,[k,m],sudoku):
-                sudoku[k][m] = num
+            if self.check_row_col_block(num,[row,column],sudoku):
+                sudoku[row][column] = num
                 if self.backtracking(sudoku):
                     return True
-                sudoku[k][m] = 0
+                sudoku[row][column] = 0
         return False
 
+    def saving_solution_to_txt(self,solution):
+        time =datetime.now().strftime("%Y_%m_%d_%H_%M_%S")
+        file_name = "./db/automatic_result_"+time+".txt"
+        with open(file_name,'w', encoding = 'utf-8') as file:
+            for line in solution:
+                file.writelines(str(line)+"\n")
 
 sudoku_scraped = SudokuScraperAndSolver(3)
 print(sudoku_scraped.sudoku)
