@@ -93,3 +93,24 @@ class SudokuScraperAndSolver:
 sudoku_scraped = SudokuScraperAndSolver(3)
 print(sudoku_scraped.sudoku)
 print(sudoku_scraped.solved)
+
+class Root(Tk):
+    def __init__(self,sudoku):
+        super(Root,self).__init__()
+        self.title("Sudoku")
+        self.minsize(400,400)
+        self.make_gameboard(sudoku)
+        
+    def make_gameboard(self,sudoku):
+        for i in range(9):
+            for j in range(9):
+                if sudoku[i][j] != 0:
+                    already_set = Label(self,text=sudoku[i][j],font=("Arial",18))
+                    already_set.grid(row=i,column=j)
+                else:
+                    entry_field = Entry(self,width=3,font=("Arial",18))
+                    entry_field.grid(row=i,column=j)
+
+
+root = Root(sudoku_scraped.sudoku)
+root.mainloop()
