@@ -4,7 +4,6 @@ Sudoku scraping and solving along with interactive Gui
 
 from copy import deepcopy
 from datetime import datetime
-from tkinter import *
 from bs4 import BeautifulSoup
 import requests
 
@@ -84,23 +83,26 @@ class SudokuScraperAndSolver:
         return False
 
     def saving_solution_to_txt(self,solution):
-        time =datetime.now().strftime("%Y_%m_%d_%H_%M_%S")
+        time =datetime.now().strftime("%Y-%m-%d-%H-%M-%S")
         file_name = "./db/automatic_result_"+time+".txt"
         with open(file_name,'w', encoding = 'utf-8') as file:
             for line in solution:
                 file.writelines(str(line)+"\n")
 
-sudoku_scraped = SudokuScraperAndSolver(3)
+""" sudoku_scraped = SudokuScraperAndSolver(3)
 print(sudoku_scraped.sudoku)
-print(sudoku_scraped.solved)
-
+print(sudoku_scraped.solved) """
+""" 
 class Root(Tk):
     def __init__(self,sudoku):
         super(Root,self).__init__()
         self.title("Sudoku")
         self.minsize(400,400)
         self.make_gameboard(sudoku)
-        
+
+    def write_entry_into_board(self,i,j,sudoku):
+        sudoku[i][j] = int(entry_field.get())
+
     def make_gameboard(self,sudoku):
         for i in range(9):
             for j in range(9):
@@ -109,8 +111,11 @@ class Root(Tk):
                     already_set.grid(row=i,column=j)
                 else:
                     entry_field = Entry(self,width=3,font=("Arial",18))
+                    entry_field.bind("<KeyRelease>",self.write_entry_into_board(i,j,sudoku))
                     entry_field.grid(row=i,column=j)
+
+                    sudoku[i][j] = int(entry_field.get())
 
 
 root = Root(sudoku_scraped.sudoku)
-root.mainloop()
+root.mainloop() """
