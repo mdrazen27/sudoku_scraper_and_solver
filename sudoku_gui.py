@@ -32,8 +32,34 @@ def game_start(sudoku, solved):
     root.minsize(400,400)
     global my_entries
     make_gameboard(sudoku,solved)
+    numpad_input()
 
-        
+def numpad_input():
+    dugme_1 = Button(root, bg="orange", text="1", font=("Arial",16), command= lambda: keypad_press("1"))
+    dugme_2 = Button(root, bg="orange", text="2", font=("Arial",16), command= lambda: keypad_press("2"))
+    dugme_3 = Button(root, bg="orange", text="3", font=("Arial",16), command= lambda: keypad_press("3"))
+    dugme_4 = Button(root, bg="orange", text="4", font=("Arial",16), command= lambda: keypad_press("4"))
+    dugme_5 = Button(root, bg="orange", text="5", font=("Arial",16), command= lambda: keypad_press("5"))
+    dugme_6 = Button(root, bg="orange", text="6", font=("Arial",16), command= lambda: keypad_press("6"))
+    dugme_7 = Button(root, bg="orange", text="7", font=("Arial",16), command= lambda: keypad_press("7"))
+    dugme_8 = Button(root, bg="orange", text="8", font=("Arial",16), command= lambda: keypad_press("8"))
+    dugme_9 = Button(root, bg="orange", text="9", font=("Arial",16), command= lambda: keypad_press("9"))
+    dugme_0 = Button(root, bg="orange", text="Clear", font=("Arial",16), command= lambda: keypad_press("del"))
+    dugme_1.grid(row=11, column=0)
+    dugme_2.grid(row=11, column=1)
+    dugme_3.grid(row=11, column=2)
+    dugme_4.grid(row=11, column=3)
+    dugme_5.grid(row=11, column=4)
+    dugme_6.grid(row=11, column=5)
+    dugme_7.grid(row=11, column=6)
+    dugme_8.grid(row=11, column=7)
+    dugme_9.grid(row=11, column=8)
+    dugme_0.grid(row=11, column=9)
+
+def keypad_press(arg):
+    pass
+    
+
 def write_entry_into_board(sudoku,solved):
     for i in range(9):
         for j in range(9):
