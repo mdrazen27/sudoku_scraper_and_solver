@@ -5,6 +5,7 @@ from tkinter.simpledialog import askstring
 import re
 from datetime import timedelta
 from sudoku_scraper_and_solver import *
+# pylint: disable=[C0301,C0103,W0601,W0614,W0401]
 
 difficulty_of_game = ["easy", "medium", "hard", "expert"]
 
@@ -14,6 +15,7 @@ def game_start(sudoku, solved,difficulty):
     global root
     global my_entries
     global time_count
+    global timer
 
     root=Tk()
     root.title("Sudoku " + difficulty_of_game[difficulty-1])
@@ -21,7 +23,10 @@ def game_start(sudoku, solved,difficulty):
     time_count = 0
     make_gameboard(sudoku, solved)
     numpad_input()
-    
+    time = Label(root, text='Time', font=("Arial",16))
+    time.grid(row=1, column=10)
+    timer = Label(root, text = "0:00:00", font=("Arial",16))
+    timer.grid(row=2, column=10)
     easy_level=Button(root, text="Easy one", font=("Arial",13), command=lambda : new_starting(1))
     medium_level=Button(root, text="Medium one", font=("Arial",13), command=lambda : new_starting(2))
     hard_level=Button(root, text="Hard one", font=("Arial",13), command=lambda : new_starting(3))
@@ -30,6 +35,7 @@ def game_start(sudoku, solved,difficulty):
     medium_level.grid(row=5, column=10)
     hard_level.grid(row=6, column=10)
     expert_level.grid(row=7, column=10)
+    root.after(1000, update_timer)
 
 def numpad_input():
     """crates button inputs for the game"""
@@ -114,9 +120,10 @@ def saving_solution_to_txt(solution,name):
     after its saved starts new game
     """
     global root
+    global time_count
     if len(name)==0:
         name = "Anonymous-"
-    my_new_string = re.sub('[^a-zA-Z]', '-', name)
+    my_new_string = re.sub('[^a-zA-Z]', '-', name) + str(time_count)
     file_name = "./db/"+my_new_string+".txt"
     with open(file_name,'w', encoding = 'utf-8') as file:
         for line in solution:
@@ -129,6 +136,14 @@ def new_starting(difficulty=3):
     sudoku_scraped = SudokuScraperAndSolver(difficulty)
     game_start(sudoku_scraped.sudoku,sudoku_scraped.solved,difficulty)
 
+
+def update_timer():
+    """updates timer after every second"""
+    global time_count
+    time_count += 1
+    dis = str(timedelta(seconds=time_count))
+    timer.configure(text=dis)
+    root.after(1000,update_timer)
 
 
 game_start(sudoku_scraped_start.sudoku, sudoku_scraped_start.solved, 3)
