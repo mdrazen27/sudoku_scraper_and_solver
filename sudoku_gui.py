@@ -1,66 +1,70 @@
+"""GUI for sudoku"""
+
 from tkinter import *
 from tkinter.simpledialog import askstring
 import re
+from datetime import timedelta
 from sudoku_scraper_and_solver import *
-sudoku=[[0, 0, 5, 0, 0, 0, 0, 0, 0], 
-        [7, 0, 4, 0, 0, 3, 0, 0, 6], 
-        [0, 0, 0, 7, 2, 1, 0, 4, 0], 
-        [6, 7, 2, 0, 0, 0, 0, 5, 0], 
-        [0, 0, 0, 0, 8, 0, 0, 0, 0], 
-        [0, 8, 0, 0, 0, 0, 1, 7, 2], 
-        [0, 2, 0, 1, 5, 0, 0, 0, 0], 
-        [5, 0, 0, 8, 0, 0, 6, 0, 3], 
-        [0, 0, 0, 0, 0, 0, 2, 0, 0]]
+
+difficulty_of_game = ["easy", "medium", "hard", "expert"]
 
 
-
-solved=[[2, 9, 5, 6, 4, 8, 7, 3, 1], 
-        [7, 1, 4, 5, 9, 3, 8, 2, 6], 
-        [8, 3, 6, 7, 2, 1, 5, 4, 9],
-        [6, 7, 2, 3, 1, 4, 9, 5, 8], 
-        [9, 5, 1, 2, 8, 7, 3, 6, 4], 
-        [4, 8, 3, 9, 6, 5, 1, 7, 2], 
-        [3, 2, 8, 1, 5, 6, 4, 9, 7], 
-        [5, 4, 9, 8, 7, 2, 6, 1, 3], 
-        [1, 6, 7, 4, 3, 9, 2, 8, 5]]
-
-    
-def game_start(sudoku, solved):
+def game_start(sudoku, solved,difficulty):
+    """sets up initial board buttons and numpad"""
     global root
-    root=Tk()
-    root.title("Sudoku")
-    root.minsize(400,400)
     global my_entries
-    make_gameboard(sudoku,solved)
+    global time_count
+
+    root=Tk()
+    root.title("Sudoku " + difficulty_of_game[difficulty-1])
+    root.minsize(400, 400)
+    time_count = 0
+    make_gameboard(sudoku, solved)
     numpad_input()
+    
+    easy_level=Button(root, text="Easy one", font=("Arial",13), command=lambda : new_starting(1))
+    medium_level=Button(root, text="Medium one", font=("Arial",13), command=lambda : new_starting(2))
+    hard_level=Button(root, text="Hard one", font=("Arial",13), command=lambda : new_starting(3))
+    expert_level=Button(root, text="Expert one", font=("Arial",13), command=lambda : new_starting(4))
+    easy_level.grid(row=4, column=10)
+    medium_level.grid(row=5, column=10)
+    hard_level.grid(row=6, column=10)
+    expert_level.grid(row=7, column=10)
 
 def numpad_input():
-    dugme_1 = Button(root, bg="orange", text="1", font=("Arial",16), command= lambda: keypad_press("1"))
-    dugme_2 = Button(root, bg="orange", text="2", font=("Arial",16), command= lambda: keypad_press("2"))
-    dugme_3 = Button(root, bg="orange", text="3", font=("Arial",16), command= lambda: keypad_press("3"))
-    dugme_4 = Button(root, bg="orange", text="4", font=("Arial",16), command= lambda: keypad_press("4"))
-    dugme_5 = Button(root, bg="orange", text="5", font=("Arial",16), command= lambda: keypad_press("5"))
-    dugme_6 = Button(root, bg="orange", text="6", font=("Arial",16), command= lambda: keypad_press("6"))
-    dugme_7 = Button(root, bg="orange", text="7", font=("Arial",16), command= lambda: keypad_press("7"))
-    dugme_8 = Button(root, bg="orange", text="8", font=("Arial",16), command= lambda: keypad_press("8"))
-    dugme_9 = Button(root, bg="orange", text="9", font=("Arial",16), command= lambda: keypad_press("9"))
-    dugme_0 = Button(root, bg="orange", text="Clear", font=("Arial",16), command= lambda: keypad_press("del"))
-    dugme_1.grid(row=11, column=0)
-    dugme_2.grid(row=11, column=1)
-    dugme_3.grid(row=11, column=2)
-    dugme_4.grid(row=11, column=3)
-    dugme_5.grid(row=11, column=4)
-    dugme_6.grid(row=11, column=5)
-    dugme_7.grid(row=11, column=6)
-    dugme_8.grid(row=11, column=7)
-    dugme_9.grid(row=11, column=8)
-    dugme_0.grid(row=11, column=9)
+    """crates button inputs for the game"""
+    btn_1 = Button(root, bg="orange", text="1", font=("Arial",16), command= lambda: keypad_press("1"))
+    btn_2 = Button(root, bg="orange", text="2", font=("Arial",16), command= lambda: keypad_press("2"))
+    btn_3 = Button(root, bg="orange", text="3", font=("Arial",16), command= lambda: keypad_press("3"))
+    btn_4 = Button(root, bg="orange", text="4", font=("Arial",16), command= lambda: keypad_press("4"))
+    btn_5 = Button(root, bg="orange", text="5", font=("Arial",16), command= lambda: keypad_press("5"))
+    btn_6 = Button(root, bg="orange", text="6", font=("Arial",16), command= lambda: keypad_press("6"))
+    btn_7 = Button(root, bg="orange", text="7", font=("Arial",16), command= lambda: keypad_press("7"))
+    btn_8 = Button(root, bg="orange", text="8", font=("Arial",16), command= lambda: keypad_press("8"))
+    btn_9 = Button(root, bg="orange", text="9", font=("Arial",16), command= lambda: keypad_press("9"))
+    btn_0 = Button(root, bg="orange", text="Clear field", font=("Arial",16), command=lambda: keypad_press("del"))
+    btn_1.grid(row=11, column=0)
+    btn_2.grid(row=11, column=1)
+    btn_3.grid(row=11, column=2)
+    btn_4.grid(row=11, column=3)
+    btn_5.grid(row=11, column=4)
+    btn_6.grid(row=11, column=5)
+    btn_7.grid(row=11, column=6)
+    btn_8.grid(row=11, column=7)
+    btn_9.grid(row=11, column=8)
+    btn_0.grid(row=11, column=9)
 
 def keypad_press(arg):
+    """writes number from button in proper cell"""
+    print(arg)
     pass
-    
+
 
 def write_entry_into_board(sudoku,solved):
+    """
+    Fills users inputs into appropriate cell, if it's wrong changes color of numbers in the cell to red
+    Checks if endgame condition is met and if it asks for name and surname
+    """
     for i in range(9):
         for j in range(9):
             if my_entries[i][j] != 0:
@@ -72,12 +76,13 @@ def write_entry_into_board(sudoku,solved):
                         field.configure(foreground= "red")
                     else:
                         field.configure(foreground= "black")
-                        if check_filled(sudoku,solved):
-                            name = askstring('Way to be remembered', 'Please enter your name and surname.\n')
-                            saving_solution_to_txt(sudoku,name)
-                            
-                
+                    if check_filled(sudoku,solved):
+                        name = askstring('Way to be remembered', 'Please enter your name and surname.\n')
+                        saving_solution_to_txt(sudoku,name)
+
+
 def make_gameboard(sudoku,solved):
+    """Makes initial board"""
     global my_entries
     my_entries=[]
     for i in range(9):
@@ -95,6 +100,7 @@ def make_gameboard(sudoku,solved):
         my_entries.append(row_entries)
 
 def check_filled(sudoku,solved):
+    """Checks if endgame condition is met"""
     count_of_wrong = 81
     for i in range(9):
         for j in range(9):
@@ -103,21 +109,27 @@ def check_filled(sudoku,solved):
     return count_of_wrong == 0
 
 def saving_solution_to_txt(solution,name):
+    """
+    saves solution to database if user doesn't give name makes it anonymous by default
+    after its saved starts new game
+    """
     global root
     if len(name)==0:
-            name = "Anonymous"
+        name = "Anonymous-"
     my_new_string = re.sub('[^a-zA-Z]', '-', name)
-    # time =datetime.now().strftime("%Y_%m_%d_%H_%M_%S")
     file_name = "./db/"+my_new_string+".txt"
     with open(file_name,'w', encoding = 'utf-8') as file:
         for line in solution:
             file.writelines(str(line)+"\n")
+    new_starting()
+
+def new_starting(difficulty=3):
+    """makes new game start by default its hard sudoku"""
     root.destroy()
-    sudoku_scraped = SudokuScraperAndSolver(3)
-    game_start(sudoku_scraped.sudoku,sudoku_scraped.solved)
-    
-    
+    sudoku_scraped = SudokuScraperAndSolver(difficulty)
+    game_start(sudoku_scraped.sudoku,sudoku_scraped.solved,difficulty)
 
 
-game_start(sudoku,solved)
+
+game_start(sudoku_scraped_start.sudoku, sudoku_scraped_start.solved, 3)
 root.mainloop()
