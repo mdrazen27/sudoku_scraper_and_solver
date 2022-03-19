@@ -1,5 +1,6 @@
 """Sudoku scraping and solving"""
 
+#pylint: disable = [R0201]
 from copy import deepcopy
 from datetime import datetime
 from bs4 import BeautifulSoup
@@ -82,10 +83,8 @@ class SudokuScraperAndSolver:
 
     def saving_solution_to_txt(self,solution):
         """saves solution in database with unique time of solution"""
-        time =datetime.now().strftime("%Y-%m-%d-%H-%M-%S")
-        file_name = "./db/automatic-result-"+time+".txt"
+        time =datetime.now().strftime("%Y_%m_%d_%H_%M_%S")
+        file_name = "./db/automatic_result_"+time+".txt"
         with open(file_name,'w', encoding = 'utf-8') as file:
             for line in solution:
                 file.writelines(str(line)+"\n")
-
-sudoku_scraped_start = SudokuScraperAndSolver(3)
