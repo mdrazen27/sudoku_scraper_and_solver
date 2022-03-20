@@ -30,10 +30,10 @@ def game_start(sudoku, solved,difficulty):
     time.grid(row=1, column=9)
     timer = Label(root, text = "0:00:00", font=("Arial",16))
     timer.grid(row=2, column=9)
-    easy_level=Button(root, text="Easy one", bg="SpringGreen2", width=10, font=("Arial",13), command =lambda:new_starting(1))
-    medium_level=Button(root, text="Medium one", bg="SpringGreen4", width=10, font=("Arial",13), command =lambda:new_starting(2))
-    hard_level=Button(root, text="Hard one", bg="firebrick1", width=10, font=("Arial",13), command =lambda:new_starting(3))
-    expert_level=Button(root, text="Expert one", bg="firebrick4", width=10, font=("Arial",13), command =lambda:new_starting(4))
+    easy_level=Button(root, text="Easy one", bg="SeaGreen4", width=10, font=("Arial",13), command =lambda:new_starting(1))
+    medium_level=Button(root, text="Medium one", bg="DarkSeaGreen4", width=10, font=("Arial",13), command =lambda:new_starting(2))
+    hard_level=Button(root, text="Hard one", bg="orange red", width=10, font=("Arial",13), command =lambda:new_starting(3))
+    expert_level=Button(root, text="Expert one", bg="DarkRed", width=10, font=("Arial",13), command =lambda:new_starting(4))
     easy_level.grid(row=4, column=9)
     medium_level.grid(row=5, column=9)
     hard_level.grid(row=6, column=9)
@@ -42,7 +42,7 @@ def game_start(sudoku, solved,difficulty):
 
 def numpad_input(sudo,solv):
     """crates button inputs for the game"""
-    color = "SlateBlue1"
+    color = "CornflowerBlue"
     btn_1 = Button(root, bg=color, text="1", font=("Arial",16), command= lambda: keypad_press(sudo,solv,"1"))
     btn_2 = Button(root, bg=color, text="2", font=("Arial",16), command= lambda: keypad_press(sudo,solv,"2"))
     btn_3 = Button(root, bg=color, text="3", font=("Arial",16), command= lambda: keypad_press(sudo,solv,"3"))
@@ -102,11 +102,11 @@ def make_gameboard(sudoku,solved):
         row_entries = []
         for j in range(9):
             if j in (3,6):
-                pad_side = (10,0)
+                pad_side = (6,0)
             else:
                 pad_side = (1,0)
             if i in (3,6):
-                pad_up = (10,0)
+                pad_up = (6,0)
             else:
                 pad_up = (1,0)
             if sudoku[i][j] != 0:
