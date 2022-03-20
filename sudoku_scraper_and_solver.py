@@ -1,6 +1,6 @@
 """Sudoku scraping and solving"""
 
-#pylint: disable = [R0201]
+
 from copy import deepcopy
 from datetime import datetime
 from bs4 import BeautifulSoup
@@ -41,7 +41,8 @@ class SudokuScraperAndSolver:
     def __repr__(self):
         return f'{self.sudoku}'
 
-    def check_row_col_block(self,num,position,sudoku):
+    @staticmethod
+    def check_row_col_block(num,position,sudoku):
         """
         checks if number conflicts with one already existing in the same row, column or block
         """
@@ -56,7 +57,8 @@ class SudokuScraperAndSolver:
                     return False
         return True
 
-    def see_next_empty(self,sudoku):
+    @staticmethod
+    def see_next_empty(sudoku):
         """checks if any of the blocks is still empty"""
         for i in range(9):
             for j in range(9):
@@ -81,7 +83,8 @@ class SudokuScraperAndSolver:
                 sudoku[row][column] = 0
         return False
 
-    def saving_solution_to_txt(self,solution):
+    @staticmethod
+    def saving_solution_to_txt(solution):
         """saves solution in database with unique time of solution"""
         time =datetime.now().strftime("%Y_%m_%d_%H_%M_%S")
         file_name = "./db/automatic_result_"+time+".txt"
